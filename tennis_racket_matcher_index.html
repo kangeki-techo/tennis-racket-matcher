@@ -1,0 +1,392 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>テニスラケット・マッチング計算機 Ver.8.4｜KIMONY KBN263対応</title>
+<meta name="description" content="2本の硬式テニスラケットの実測重量・バランスを比較し、KIMONY KBN263リードテープのカット長・枚数・貼付位置を計算。SWの測定は任意。">
+<style>
+:root{--ink:#183239;--muted:#526971;--green:#076f66;--light:#e9f5f0;--line:#d4e2dd;--paper:#fff;--bg:#f2f6f5;--orange:#cf7626;--blue:#236b92}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif;line-height:1.65;font-size:15px}.wrap{max-width:1170px;margin:auto;padding:25px 18px 70px}header{padding:15px 0 21px;border-bottom:1px solid var(--line);margin-bottom:22px}h1{font-size:clamp(25px,3vw,36px);margin:5px 0 6px;line-height:1.35}h2{font-size:19px;margin:0 0 13px}h3{font-size:16px;margin:13px 0 8px}.eyebrow{color:var(--green);letter-spacing:.12em;font-size:11px;font-weight:800}.small,.hint{font-size:12px;color:var(--muted)}.hint{margin:8px 0}.card{background:var(--paper);border:1px solid var(--line);padding:21px 23px;border-radius:15px;margin:15px 0;box-shadow:0 5px 20px #31594a0a}.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.four{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.field{margin:7px 0}.field label{display:block;font-size:12px;font-weight:700;margin-bottom:4px}input[type=number],select{width:100%;border:1px solid #b7cdc6;border-radius:8px;padding:9px 9px;font:inherit;color:var(--ink);background:#fff;min-width:0}input[type=radio],input[type=checkbox]{accent-color:var(--green)}input:focus,select:focus,button:focus-visible{outline:2px solid var(--green);outline-offset:2px}.choice{display:block;border:1px solid var(--line);border-radius:11px;padding:12px;background:#fafdfb;margin:6px 0;cursor:pointer}.choice:has(input:checked){background:var(--light);border-color:var(--green)}.choice input{margin-right:8px}.choice small{display:block;margin:4px 0 0 24px;color:var(--muted)}.head{font-weight:800;margin:2px 0 12px;display:flex;align-items:center;gap:8px}.letter{background:#def1e9;color:#096b61;border-radius:9px;padding:4px 10px}.letter.b{background:#e7f0fa;color:var(--blue)}.options{display:flex;flex-wrap:wrap;gap:10px}.options label{font-size:13px;background:#f7faf9;border:1px solid var(--line);padding:7px 10px;border-radius:9px}.note{border-left:3px solid var(--green);background:#eff8f4;padding:10px 14px;font-size:12px;border-radius:4px;margin:12px 0}.warning{border-left:4px solid #ba7423;background:#fff8e8;padding:12px 14px;border-radius:5px;margin:10px 0;font-size:13px}.error{border-left:4px solid #b74737;background:#fff3f0;padding:14px 16px;border-radius:5px;margin:10px 0}button{padding:12px 20px;border:1px solid var(--green);border-radius:10px;background:var(--green);color:#fff;font:inherit;font-weight:700;cursor:pointer}button.secondary{background:#fff;color:var(--green)}button:hover{filter:brightness(.96)}.actions{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:20px 0}table{width:100%;border-collapse:collapse;font-size:13px}th,td{padding:8px 7px;text-align:right;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}th:first-child,td:first-child{text-align:left}th{font-weight:750;color:var(--muted);background:#f6faf8}.table-wrap{overflow-x:auto}#stationTable{min-width:700px}#stationTable td,#stationTable th{text-align:center}#stationTable th:first-child,#stationTable td:first-child{text-align:left}#stationTable input[type=number]{width:100px;padding:5px 6px;font-size:13px}#stationTable label{display:flex;align-items:center;gap:4px;font-weight:650}details{margin:14px 0;border:1px solid var(--line);padding:10px 13px;border-radius:10px}summary{font-weight:750;cursor:pointer}.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:12px 0}.stat{background:#f6faf8;border:1px solid var(--line);border-radius:11px;padding:12px}.stat strong{display:block;font-size:clamp(18px,3vw,26px);line-height:1.4}.stat small{color:var(--muted)}.result{border:1px solid var(--line);background:#fbfdfc;border-radius:11px;padding:15px}.result .figure{margin:15px auto;max-width:510px}.figure svg{width:100%;height:auto;display:block}.placement{border-top:1px solid var(--line);padding:11px 0;font-size:13px}.placement strong{color:var(--ink)}.placement .cut{margin:4px 0 0 0;font-size:12px;line-height:1.65;color:#475e64}.pill{font-size:12px;font-weight:800;color:var(--green);background:var(--light);border-radius:9px;padding:6px 11px;display:inline-block}.muted{color:var(--muted)}[hidden]{display:none!important}footer{font-size:12px;color:var(--muted);padding:15px 0}.sr-only{position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}.testtag{font-size:11px;color:var(--muted)}
+@media(max-width:800px){.three,.four{grid-template-columns:repeat(2,minmax(0,1fr))}.wrap{padding:13px}.card{padding:17px}.two{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}.stats .stat:last-child{grid-column:1/-1}}@media(max-width:440px){.three,.four{grid-template-columns:1fr 1fr;gap:8px}.options{gap:6px}.actions button{width:100%}}@media print{body{background:white}.wrap{max-width:none;padding:5px}.card{break-inside:avoid;box-shadow:none;margin:7px 0;padding:10px}#inputSections,.actions,header .hint{display:none!important}.two{grid-template-columns:1fr 1fr}.result .figure{max-width:300px}footer{display:none!important}h1{font-size:20px}}
+
+/* Ver.8.1: optional help and advanced inputs */
+.help-details{background:#f7fbf9;border-color:#d5e6df}.help-details summary{display:flex;align-items:center;gap:8px;color:var(--green)}
+.help-details summary::marker{color:var(--green)}.help-details[open]{background:#fff}
+.help-figure{display:flex;align-items:center;flex-wrap:wrap;gap:16px;padding:14px 4px 4px}
+.help-figure svg{width:min(100%,340px);height:auto;flex:0 0 290px}
+.help-figure p{flex:1 1 240px;margin:0;font-size:13px;color:#3d5b56}
+.advanced-details{margin:0;border:none;padding:0}.advanced-details>summary{list-style:none;cursor:pointer;display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:4px 0}
+.advanced-details>summary::-webkit-details-marker{display:none}.advanced-details>summary::before{content:'▸';color:var(--green);font-size:18px}.advanced-details[open]>summary::before{content:'▾'}
+.advanced-details .disclosure-note{font-size:12px;font-weight:400;color:var(--muted)}
+.advanced-body{border-top:1px solid var(--line);padding-top:15px;margin-top:12px}
+.distance-help{padding:12px 14px;background:#f8fbfa;border:1px solid var(--line);border-radius:10px;margin:12px 0}
+.distance-help svg{display:block;width:min(100%,550px);height:auto;margin:0 auto}
+.distance-help p{margin:8px 0 0;font-size:12px;color:var(--muted)}
+.reading-guide{background:#eff8f4;border:1px solid #cce7da;border-radius:9px;padding:12px 14px;font-size:13px;margin:10px 0 16px}
+.placement .howto{margin:5px 0;font-size:13px;color:#284e49;font-weight:600}
+.placement .cut{word-break:normal;overflow-wrap:anywhere}.wrap-cross{margin:8px 0;background:#f5faf7;border:1px solid #d7e7dc;border-radius:8px;padding:5px}.wrap-cross svg{display:block;max-width:310px;width:100%;height:auto}
+@media(max-width:560px){.help-figure svg{flex:1 1 100%;max-width:340px}.help-figure{gap:6px}.disclosure-note{display:block;width:100%}.result .figure{max-width:100%}}
+@media print{.help-details,.advanced-details,.distance-help{display:none!important}}
+
+/* Ver.8.3: measured inputs, measurement guide and easy comparison */
+.measure-alert{background:#fff6df;border:2px solid #c88b29;border-radius:12px;padding:16px 18px;margin:0 0 20px;color:#4b361d}
+.measure-alert .alert-title{font-size:clamp(17px,2.4vw,21px);font-weight:850;line-height:1.45;display:block;margin-bottom:6px}
+.measure-alert p{font-size:14px;margin:0;line-height:1.7}
+.measure-alert strong{font-weight:850}
+.measure-label{font-weight:800}.measure-caption{font-size:12px;color:#5a5c4c}
+.balance-guide{background:#f8fbfa;border:1px solid #cfded7;border-radius:11px;margin:17px 0 2px;padding:11px 14px}
+.balance-guide summary{color:var(--green);font-size:14px}
+.balance-guide[open]{background:#fff}
+.balance-illustration{margin:12px auto 3px;max-width:640px}
+.balance-illustration svg{display:block;width:100%;height:auto}
+.balance-steps{padding-left:22px;margin:12px 0 7px;font-size:13px;line-height:1.8}
+.balance-steps li{margin-bottom:5px}
+.balance-photo-note{font-size:12px;color:var(--muted);padding:8px 0;border-top:1px dashed var(--line)}
+.result-disclaimer{border:2px solid #c88b29;background:#fff8e9;border-radius:11px;padding:14px 17px;margin:14px 0 12px;font-size:14px;line-height:1.75}
+.result-disclaimer strong{display:block;font-size:16px;margin-bottom:3px}
+.compare-table{width:100%;table-layout:fixed}
+.compare-table th,.compare-table td{text-align:center;padding:10px 6px;overflow-wrap:anywhere}
+.compare-table th:first-child,.compare-table td:first-child{text-align:left;width:23%}
+.compare-table th:nth-child(2),.compare-table th:nth-child(3){background:#ecf0ee}
+.compare-table th:nth-child(4),.compare-table th:nth-child(5){background:#e7f5ef;color:#075f56}
+.compare-table td:nth-child(4),.compare-table td:nth-child(5){background:#f1faf6;font-weight:750}
+.compare-separator{border-left:2px solid #bad9cc!important}
+.compare-diff{margin:9px 0 1px;font-size:13px;font-weight:700;color:#31554b}
+@media(max-width:560px){.measure-alert{padding:13px}.measure-alert p{font-size:13px}.compare-table{font-size:11px}.compare-table th,.compare-table td{padding:8px 3px}.compare-table th:first-child,.compare-table td:first-child{width:23%}.result-disclaimer{padding:11px 13px;font-size:13px}}
+@media print{.balance-guide{display:none!important}.measure-alert{break-inside:avoid}.result-disclaimer{break-inside:avoid}.compare-table{font-size:11px}}
+
+/* KBN263 product reference: local UI, external navigation only on user click. */
+.product-lead{margin:0 0 13px;border:1px solid #b9d7ca;background:#f4faf7;padding:15px 17px;border-radius:12px}
+.product-title{font-size:17px;font-weight:850;color:#145c50;margin:4px 0 6px}
+.product-specs{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0}
+.product-specs span{background:#fff;border:1px solid #d1e5db;border-radius:7px;padding:4px 9px;font-size:12px;font-weight:700}
+.product-purchase{display:inline-block;text-decoration:none;background:#b91225;color:white!important;padding:9px 15px;border-radius:8px;font-weight:800;font-size:14px;margin:5px 0}
+.product-purchase:hover{background:#930d1e}
+.product-pr{display:block;font-size:11px;color:#556b65;margin-top:5px}
+.product-meter{border-left:4px solid #168276;background:#eff8f4;padding:12px 15px;margin:10px 0;border-radius:6px;font-size:13px}
+@media print{.product-purchase,.product-lead{display:none!important}}
+</style></head><body><div class="wrap"><header><div class="eyebrow">RACKET MATCH / VER.8.4 / OFFLINE</div><h1>テニスラケット・マッチング計算機</h1><p class="hint">２本の<strong>静止重量・バランスポイント（グリップエンド基準）</strong>を、実際に切れる錘テープで合わせます。SW測定は不要です。データは外部送信されません。</p></header>
+<div id="inputSections">
+<section class="card" aria-label="調整対象"><h2>1. 調整対象</h2><div class="two"><label class="choice"><input type="radio" name="matchMode" value="one" checked><strong>片方のラケットを基準に合わせる</strong><small>ラケットAは変更せず、ラケットBに追加します。</small></label><label class="choice"><input type="radio" name="matchMode" value="both"><strong>両方のラケットを調整してそろえる</strong><small>A・Bの両方に錘を追加できます。</small></label></div></section>
+<section class="card"><h2>2. 測定状態</h2><label class="choice"><input type="radio" name="measureMode" value="purchase" checked><strong>購入時のスペックをそろえる</strong><small>同じモデルの個体差調整向け／未張り・未装着を想定</small></label><label class="choice"><input type="radio" name="measureMode" value="use"><strong>実使用時のスペックをそろえる</strong><small>異なるモデル・メーカーにも対応／装着品込み</small></label><p class="note" id="measureHint">購入時の比較：実際に測った状態を２本で統一してください。「購入時」でも張り上げ済みなら実際の装着品を確認します。モデルが同じことは計算の条件ではありません。</p></section>
+<section class="card"><h2>3. ２本の測定値</h2><aside class="measure-alert" role="note" aria-label="実測値の入力についての重要な注意">
+<span class="alert-title">重要：ラケットに書かれたスペックではなく、必ず実測値を入力してください</span>
+<p>メーカーのカタログ値・フレームの印字は<strong>公称値</strong>です。個体差やストリング、グリップなどの装着品によって実際の重量・バランスは変わります。<strong>ラケットA・Bをそれぞれ測定</strong>し、２本とも同じ装着状態の数値を入力してください。</p>
+</aside><div class="two"><div><div class="head"><span class="letter">A</span><span id="titleA">基準ラケット</span></div><div class="four"><div class="field"><label for="al">全長 (inch)</label><input id="al" type="number" value="27" step="any"></div><div class="field"><label for="am">総重量（実測・g）</label><input id="am" type="number" step="any" placeholder="例 300"></div><div class="field"><label for="ab">バランス（実測・mm）</label><input id="ab" type="number" step="any" placeholder="例 320"></div><div class="field"><label for="as">SW (任意)</label><input id="as" type="number" step="any" placeholder="未測定なら空欄"></div><div class="field"><label for="ag">グリップ長 (cm)</label><input id="ag" type="number" value="20" step="any"></div><div class="field"><label for="ac">グリップの周りの長さ (mm)</label><input id="ac" type="number" value="108" step="any"></div></div></div><div><div class="head"><span class="letter b">B</span><span id="titleB">調整するラケット</span></div><div class="four"><div class="field"><label for="bl">全長 (inch)</label><input id="bl" type="number" value="27" step="any"></div><div class="field"><label for="bm">総重量（実測・g）</label><input id="bm" type="number" step="any" placeholder="例 302"></div><div class="field"><label for="bb">バランス（実測・mm）</label><input id="bb" type="number" step="any" placeholder="例 322"></div><div class="field"><label for="bs">SW (任意)</label><input id="bs" type="number" step="any" placeholder="未測定なら空欄"></div><div class="field"><label for="bg">グリップ長 (cm)</label><input id="bg" type="number" value="20" step="any"></div><div class="field"><label for="bc">グリップの周りの長さ (mm)</label><input id="bc" type="number" value="108" step="any"></div></div></div></div><p class="hint"><strong>バランス（mm）</strong>はラケットのいちばん下（グリップエンド）から重心までの距離です。<strong>グリップ長20cm・周りの長さ108mm</strong>は仮の数値です。わからなければ初期値でも計算できますが、テープを貼る前に現物をご確認ください。SWは空欄で構いません。</p>
+
+<details class="balance-guide" id="balanceGuide"><summary>バランスの簡単な測り方（図と手順を見る）</summary>
+<p class="hint">バランスポイントは<strong>ラケットが水平に釣り合う位置</strong>です。フレームに印字された「320mm」等の公称値をそのまま使うのではなく、手元のラケットで測ってください。</p>
+<div class="balance-illustration"><svg viewBox="0 0 640 204" role="img" aria-label="ラケットを水平に支点に載せ、グリップの末端から釣り合う支点までの距離を定規で測る模式図"><title>バランスポイント測定の模式図</title><desc>左がグリップエンド、右がフェイス。釣り合う位置の下に細い支点。下側の矢印がエンドから支点までの実測距離を示す。図は概念説明で縮尺は実測ではない。</desc>
+<rect x="44" y="75" width="225" height="22" rx="9" fill="#bdd3c7" stroke="#527769" stroke-width="2"/>
+<rect x="40" y="74" width="14" height="25" rx="4" fill="#345c52"/>
+<path d="M269 81 L350 55 M269 91 L350 116" stroke="#567b6e" stroke-width="9" stroke-linecap="round"/>
+<ellipse cx="465" cy="86" rx="120" ry="59" fill="#eaf5ed" stroke="#4c7366" stroke-width="9"/>
+<path d="M360 85 H570 M382 62 H547 M382 106 H547 M422 32 V139 M464 28 V144 M509 36 V136" fill="none" stroke="#bedace" stroke-width="2"/>
+<path d="M299 111 L324 150 L274 150 Z" fill="#e5a04c" stroke="#9d6724" stroke-width="2"/>
+<line x1="299" y1="112" x2="299" y2="153" stroke="#a66a27" stroke-width="2" stroke-dasharray="4 4"/>
+<line x1="45" y1="108" x2="45" y2="187" stroke="#567b6e" stroke-width="1.5" stroke-dasharray="4 3"/>
+<path d="M45 177 H299 M45 170 v14 M299 170 v14" fill="none" stroke="#07766b" stroke-width="2"/>
+<path d="M45 177 l10 -4 v8 Z M299 177 l-10 -4 v8 Z" fill="#07766b"/>
+<text x="172" y="166" font-size="13" text-anchor="middle" fill="#076b61" font-weight="700">グリップエンドから支点まで</text>
+<text x="172" y="197" font-size="12" text-anchor="middle" fill="#526971">測定した距離をmmで入力</text>
+<text x="299" y="164" font-size="12" text-anchor="middle" fill="#8d5b22">支点</text>
+<text x="45" y="65" font-size="12" fill="#31564d">0mm</text>
+<text x="468" y="19" font-size="12" text-anchor="middle" fill="#527167">フェイス</text>
+</svg></div>
+<ol class="balance-steps"><li>ラケットを<strong>入力する状態と同じ状態</strong>にします（張り・装着品の有無を２本で統一）。</li><li>細い丸棒や定規の縁などを支点にして、ラケットを水平に載せます。落下やフレームの傷に注意してください。</li><li>支点を少しずつ動かし、左右に傾かず釣り合う場所を見つけます。</li><li>グリップのいちばん下（エンド）から<strong>その支点の位置まで</strong>を定規で測り、mm単位で入力します。A・Bをそれぞれ測ってください。</li></ol>
+<p class="balance-photo-note">※この図は測定方法を説明する模式図です。実物写真はまだ受領していないため掲載していません。写真をいただいた後に差し替え・追加できます。</p>
+</details>
+<details class="help-details" id="gripHelp"><summary>「グリップの周りの長さ」はどこ？（図で確認）</summary>
+<div class="help-figure"><svg viewBox="0 0 330 188" role="img" aria-label="グリップを輪切りにした断面。グリップの外側に巻いたひも１周の長さが周りの長さ。横幅ではないことを示す図"><title>グリップの周りの長さの測り方</title>
+<path d="M107 22 L140 10 L173 22 L185 51 L185 90 L173 119 L140 131 L107 119 L95 90 L95 51Z" transform="translate(7,15)" fill="#dcebe5" stroke="#547b6d" stroke-width="3"/>
+<path d="M107 22 L140 10 L173 22 L185 51 L185 90 L173 119 L140 131 L107 119 L95 90 L95 51Z" transform="translate(7,15)" fill="none" stroke="#d77c2e" stroke-width="5" stroke-linejoin="round" stroke-dasharray="8 4"/>
+<path d="M207 33 Q257 62 207 98" fill="none" stroke="#b36a29" stroke-width="2"/><path d="M204 97 l10 -2 -7 -7" fill="none" stroke="#b36a29" stroke-width="2"/>
+<text x="211" y="23" font-size="12" fill="#945720">ひもを一周</text><text x="211" y="119" font-size="11" fill="#945720">巻く長さ</text>
+<text x="140" y="94" text-anchor="middle" font-size="13" font-weight="700" fill="#335e51">断面</text>
+<text x="12" y="176" font-size="12" fill="#526971">オレンジの線１周＝周りの長さ（mm）</text></svg>
+<p>グリップを輪切りにして上から見たイメージです。<strong>錘を貼る場所の外側に、ひもやメジャーを１周巻いて測った長さ</strong>を入力します。グリップの「幅」や「縦の長さ」ではありません。<br>グリップテープを<strong>外してから</strong>錘を貼るなら外した状態で、<strong>上から貼る</strong>なら巻いた状態で測ってください。初期値108mmは平均値ではなく仮の数値です。</p></div></details></section>
+<section class="card"><h2>4. 錘テープ・探索条件</h2><div class="product-lead" role="note" aria-label="この計算機で使用を想定する錘テープ">
+  <span class="pill">標準使用テープ</span>
+  <div class="product-title">KIMONY（キモニー）リードテープスリム KBN263</div>
+  <p class="hint">この計算機は<strong>この商品の公称仕様である長さと重量</strong>を基準に、実際に切るmm数から重量・バランスを計算します。</p>
+  <div class="product-specs" aria-label="商品仕様"><span>テープ幅：6mm</span><span>100mm＝1.5g</span><span>1mm＝0.015g</span><span>1パック：600mm×2本（18g）</span></div>
+  <a class="product-purchase" href="https://hb.afl.rakuten.co.jp/ichiba/58a2043b.1c10bfda.58a2043c.71338673/?pc=https%3A%2F%2Fitem.rakuten.co.jp%2Fthinkrich%2Fsk05133%2F&amp;link_type=picttext&amp;ut=eyJwYWdlIjoiaXRlbSIsInR5cGUiOiJwaWN0dGV4dCIsInNpemUiOiI0MDB4NDAwIiwibmFtIjoxLCJuYW1wIjoicmlnaHQiLCJjb20iOjEsImNvbXAiOiJkb3duIiwicHJpY2UiOjAsImJvciI6MSwiY29sIjoxLCJiYnRuIjoxLCJwcm9kIjowLCJhbXAiOmZhbHNlfQ%3D%3D" target="_blank" rel="sponsored nofollow noopener noreferrer" aria-label="楽天市場でキモニー KBN263 を見る（アフィリエイトリンク）">楽天市場でこのテープを見る ↗</a>
+  <small class="product-pr">PR・アフィリエイトリンク：リンク経由の購入で運営側に紹介料が発生する場合があります。リンクを開く場合のみ外部サイトへ移動します。価格や在庫は販売ページでご確認ください。</small>
+  <p class="hint">商品の重量は公称値です。実際の製品には誤差があり、貼付後のラケット重量・バランスは必ず再測定してください。</p>
+</div><div class="two"><label class="choice"><input type="radio" name="weightMode" value="fixed" checked><strong>定量カット：0.5 / 1 / 1.5 g相当</strong><small>KBN263のカット長に基づく重量を標準にします。</small></label><label class="choice"><input type="radio" name="weightMode" value="free"><strong>自由重量：整数mmカットを直接最適化</strong><small>１・５・10mm刻み。連続理論解への丸め込みではありません。</small></label></div><div id="fixedSettings"><div class="options"><label><input type="checkbox" data-fixed="0.5" checked>0.5g相当（33mm→0.495g）</label><label><input type="checkbox" data-fixed="1" checked>1g相当（67mm→1.005g）</label><label><input type="checkbox" data-fixed="1.5" checked>1.5g（100mm）</label></div><div class="field" style="max-width:360px"><label for="fixedBasis">定量錘の計算基準</label><select id="fixedBasis"><option value="density">KBN263：カットしたmm数で換算（標準）</option><option value="nominal">別売り定量錘：公称0.5 / 1 / 1.5gで計算（別方式）</option></select><p class="hint">KBN263では33mm＝0.495g、67mm＝1.005gです。公称0.5gや1gと厳密には一致しません。別方式を選ぶ場合は実際の定量錘をご使用ください。</p></div></div><div id="freeSettings" hidden><div class="field" style="max-width:260px"><label for="cutStep">自由重量のカット単位</label><select id="cutStep"><option value="1">1mm刻み</option><option value="5">5mm刻み</option><option value="10">10mm刻み</option></select></div></div><div class="four"><div class="field"><label for="tw">テープ幅 (mm・KBN263は6mm)</label><input id="tw" type="number" value="6" step="any"></div><div class="field"><label for="maxCut">１枚の最大カット長 (整数mm)</label><input id="maxCut" type="number" value="100" step="1"></div><div class="field"><label for="maxAdded">１本の追加重量上限</label><select id="maxAdded"><option value="10">10g</option><option value="16" selected>16g</option><option value="24">24g</option><option value="30">30g</option></select></div><div class="field"><label for="gripMethod">グリップの貼付方法</label><select id="gripMethod"><option value="auto">自動（縦／横を比較）</option><option value="vertical">縦貼りのみ</option><option value="wrap">横巻きのみ</option></select></div></div><p class="hint">KBN263を想定：100mm=1.5g、1mm=0.015g。テープ幅を変更しても密度は変わりません（別商品を使う場合は注意）。横巻きは１段につき同じ長さの２枚を、グリップの周りに向かい合わせ（表側と裏側）に貼ります。例えば５段なら計10枚です。最大カット長・グリップ幅・外周と非重複を考慮します。</p></section>
+<section class="card" aria-label="貼付位置の詳細設定"><details class="advanced-details" id="positionDetails"><summary><strong>5. 貼る位置の詳細設定（通常は変更不要）</strong><span class="disclosure-note">必要な方だけ開いて変更できます</span></summary><div class="advanced-body">
+<p class="hint">初期設定のままで計算できます。ラケットの実寸を測って調整したい場合や、錘を貼れない箇所がある場合だけ変更してください。<strong>メーカー別の寸法は使っていないため、初期の位置は概算です。</strong></p>
+<div class="distance-help"><svg viewBox="0 0 550 215" role="img" aria-label="グリップエンドを0cmとして上方向に測った、テープ帯中心までの距離。テープ自体の長さとは別の寸法であることを説明する模式図"><title>貼付中心と貼れる長さの違い</title>
+<rect x="100" y="16" width="34" height="170" rx="8" fill="#b9d0c5" stroke="#4c7969" stroke-width="2"/>
+<path d="M97 168 H138" stroke="#db822b" stroke-width="11" stroke-linecap="round"/>
+<path d="M83 188 H151" stroke="#2a4c47" stroke-width="5" stroke-linecap="round"/>
+<path d="M68 188 V168 M65 188 h6 M65 168 h6" fill="none" stroke="#07766b" stroke-width="2"/>
+<path d="M96 168 H26 M96 188 H26" stroke="#9cbaa9" stroke-dasharray="4 3"/>
+<text x="18" y="160" font-size="12" fill="#166d60">帯の中心</text><text x="17" y="205" font-size="12" font-weight="700" fill="#174d42">0cm（エンド）</text>
+<path d="M139 168 H172" stroke="#d87d24" stroke-width="1.5"/><circle cx="118" cy="168" r="3" fill="#8a4a1c"/>
+<text x="181" y="50" font-size="14" font-weight="700" fill="#234840">① 中心までの距離（cm）</text>
+<text x="181" y="71" font-size="12" fill="#526971">いちばん下から、テープ帯の</text><text x="181" y="88" font-size="12" fill="#526971">真ん中までの高さ</text>
+<path d="M175 64 L151 64 L151 168" stroke="#087468" fill="none" stroke-width="1.5" stroke-dasharray="4 3"/>
+<text x="181" y="128" font-size="14" font-weight="700" fill="#234840">② 貼れる長さ（mm）</text>
+<text x="181" y="148" font-size="12" fill="#526971">その部位に沿って、錘を置ける</text><text x="181" y="166" font-size="12" fill="#526971">スペース。わからなければ空欄</text>
+<text x="181" y="195" font-size="11" fill="#95541f">※図は位置の説明用。実際の大きさではありません</text>
+</svg><p>「中心までの距離」は<strong>テープのカット長</strong>ではありません。例：中心2.60cm＝グリップエンドから26mmの位置です。「貼れる長さ」は、その部材に沿ってテープを貼れる範囲で、初期設定では推定値を使います。</p></div>
+<p class="hint">使えない箇所はチェックを外してください。距離は<strong>グリップエンドからテープ配置の中心</strong>までの cm、貼れる長さはその部位に沿って確保できる mm を入力します。<strong>12時だけは例外</strong>で、中心位置欄に「フレームの最先端の位置」を指定します。テープの重心はカット長と模式的な曲線から自動計算します。貼れる長さは未測定なら空欄のまま使用できます。</p>
+<div class="table-wrap"><table id="stationTable"><thead><tr><th>使用／貼る部位</th><th>A 中心位置 (cm)</th><th>A 貼れる長さ (mm)</th><th>B 中心位置 (cm)</th><th>B 貼れる長さ (mm)</th></tr></thead><tbody id="stationBody"></tbody></table></div><button type="button" class="secondary" id="defaults" style="margin-top:14px">貼る位置を初期値に戻す</button>
+<p class="hint">スロートは斜めのアームに沿って貼り、図に示す軸方向の開始・終了距離はテープそのものの長さより短くなります。フェイス湾曲部・グロメットなどの貼付可否は現物で確認してください。</p></div></details></section>
+</div><div class="actions"><button id="calculate" type="button">２本のラケットを合わせる</button><button id="example" type="button" class="secondary">入力例</button><button id="reset" type="button" class="secondary">初期状態に戻す</button><span class="small">計算はブラウザ内のみ／商品リンクは外部サイト</span></div><div id="output" aria-live="polite"><section class="card"><p class="muted">重量・バランスを入力したら「２本のラケットを合わせる」を押してください。</p></section></div><footer>メーカー公称値ではなく実測値を入力してください。計算値は実物での完全一致を保証しません。施工後は必ず再測定してください。表示する最適解は探索対象（１本あたり最大２種類の貼付位置）における近似探索結果です。モデル固有のフレーム形状やグロメット位置を測定したものではありません。施工前に必ず寸法を現物確認し、施工後に重量・バランスを再測定してください。SWは10cm軸・点質量近似の参考情報です。</footer></div>
+<script>
+'use strict';
+(()=>{
+const DENS=.015,EPS=1e-9;const $=id=>document.getElementById(id);const fmt=(n,p=2)=>Number(n).toFixed(p);const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const defs=[
+ {id:'butt',name:'グリップ下部',kind:'grip',fraction:.13},
+ {id:'handle',name:'グリップ中央',kind:'grip',fraction:.50},
+ {id:'handleTop',name:'グリップ上部',kind:'grip',fraction:.85},
+ {id:'throat',name:'スロート下部（左右アーム）',kind:'throat',fraction:.34},
+ {id:'throatTop',name:'スロート上部（左右アーム）',kind:'throat',fraction:.73},
+ {id:'lowHoop',name:'フェイス 5時・7時',kind:'face',fraction:.19},
+ {id:'middleHoop',name:'フェイス 3時・9時',kind:'face',fraction:.50},
+ {id:'upperHoop',name:'フェイス 2時・10時',kind:'face',fraction:.75},
+ {id:'nearTip',name:'フェイス 1時・11時',kind:'face',fraction:.89},
+ {id:'tip',name:'フェイス 12時（表裏）',kind:'tip',fraction:.962}
+];
+const rejectCounts={};function reject(reason){rejectCounts[reason]=(rejectCounts[reason]||0)+1;}
+const sideGeom=r=>{const L=r.len*2.54,H=L*.46,start=L-H;return {L,H,start,bridge:start+H*.135,throatEnd:start+H*.17,grip:r.grip,circ:r.circ};};
+function schematic(d,g){if(d.kind==='grip')return g.grip*d.fraction;if(d.kind==='throat')return g.grip+(g.throatEnd-g.grip)*d.fraction;if(d.kind==='tip')return g.L; /* 12時は最先端を基準点とし、重心は弧長から再計算 */ return g.start+g.H*d.fraction;}
+// Intervals are schematic feasibility domains, not manufacturer dimensions.
+function zone(d,g){if(d.kind==='grip')return [0,g.grip];if(d.kind==='throat')return [g.grip+.35,g.throatEnd+.45];const ranges={lowHoop:[.075,.38],middleHoop:[.31,.68],upperHoop:[.58,.87],nearTip:[.79,.985],tip:[.87,1]};return ranges[d.id].map(v=>g.start+g.H*v);}
+function geomFor(d,g){return d.kind==='throat'?.88:d.kind==='face'||d.kind==='tip'?.9:1;}
+function stationCenter(r,d){return r.centers&&Number.isFinite(r.centers[d.id])?r.centers[d.id]:schematic(d,sideGeom(r));}
+// 12時は直線貼りではなく、先端をまたぐフレーム曲線（模式楕円）に沿って貼る。
+// 弧長 mm を数値積分して、縦方向の占有範囲と質量中心を求める。
+// フェイス実形状・グロメットは不明であり、現物確認は必須。
+function tipArc(g,mm,crest=g.L){
+ const axial=g.H/2, lateral=g.L*70/526, half=mm/20;
+ const f=t=>Math.hypot(lateral*Math.cos(t),axial*Math.sin(t));
+ function integrate(theta,weighted=false){const n=80,h=theta/n;let sum=0;
+  for(let i=0;i<=n;i++){const t=i*h,v=f(t)*(weighted?Math.cos(t):1);sum+=(i===0||i===n?1:i%2?4:2)*v;}
+  return sum*h/3;}
+ const maxTheta=Math.acos(.74);if(half>integrate(maxTheta)+1e-8)return null;
+ let low=0,high=maxTheta;for(let i=0;i<40;i++){const t=(low+high)/2;if(integrate(t)<half)low=t;else high=t;}
+ const theta=(low+high)/2,avgCos=integrate(theta,true)/integrate(theta);
+ return {theta,start:crest-axial*(1-Math.cos(theta)),end:crest,center:crest-axial*(1-avgCos)};
+}
+function makePiece(id,kind,mm,nominal,center,side,index,width=6){const factor=kind==='throat'?.88:kind==='face'||kind==='tip'?.9:1;const range=kind==='wrap'?width/20:mm/20*factor;return {station:id,kind,mm,nominal,center,start:center-range,end:center+range,axisFactor:factor,side,index,cutMass:mm*DENS};}
+function eligible(o,def,g,r,limits){const z=zone(def,g),measured=r.available&&r.available[def.id];let lo=z[0],hi=z[1];if(Number.isFinite(measured)&&measured>0){let half=measured/20*(def.kind==='throat'?.88:def.kind==='face'||def.kind==='tip'?.9:1);lo=Math.max(lo,o.x-half);hi=Math.min(hi,o.x+half);}for(const p of o.pieces){if(!Number.isFinite(p.start)||!Number.isFinite(p.end)||!Number.isFinite(p.center)){reject('配置座標が不正');return false;}if(p.mm>limits.maxCut+EPS){reject('１枚のカット上限');return false;}if(p.start<lo-EPS||p.end>hi+EPS||p.start<0||p.end>g.L){reject('部位・ラケット外周の範囲');return false;}}if(o.added>limits.maxAdded+EPS){reject('追加重量上限');return false;}return true;}
+function siteOptions(r,side,d,conf){const g=sideGeom(r),x=stationCenter(r,d);const opts=[];const z=zone(d,g);if(!(Number.isFinite(x)&&x>=z[0]&&x<=z[1])){reject('中心位置が部位の模式範囲外');return opts;}
+ const choices=(d.kind==='grip'?(conf.gripMethod==='wrap'?['wrap']:conf.gripMethod==='vertical'?['vertical']:['vertical','wrap']):[d.kind]);
+ for(const kind of choices){const copies=kind==='wrap'?2:kind==='vertical'||kind==='throat'||kind==='tip'?2:4;const pitch=(conf.width+2)/10;const maxN=kind==='wrap'?Math.min(14,Math.floor((g.grip*10+2)/(conf.width+2))):1;
+  const mmVals=conf.mode==='free'?Array.from({length:Math.floor(conf.maxCut/conf.step)},(_,i)=>(i+1)*conf.step):conf.fixedWeights.map(w=>Math.round(w/DENS));
+  for(const mm of mmVals){if(kind==='wrap' && mm>g.circ/2+EPS){reject('横巻きの対向２片が干渉');continue;}if(kind==='wrap' && mm>conf.maxCut)continue;
+   const countMax=kind==='wrap'?maxN:1;
+   for(let n=1;n<=countMax;n++){let pieces=[];const nominal=conf.mode==='fixed'?conf.fixedWeights.find(w=>Math.round(w/DENS)===mm):mm*DENS;
+    if(kind==='wrap') {for(let j=0;j<n;j++){const xc=x+(j-(n-1)/2)*pitch;for(let sideCopy=0;sideCopy<2;sideCopy++)pieces.push(makePiece(d.id,kind,mm,nominal,xc,sideCopy===0?'周方向対向①':'周方向対向②',j,conf.width));}}
+    else if(kind==='tip') {const arc=tipArc(g,mm,x);if(!arc){reject('12時の曲線部に収まらない弧長');continue;}
+     for(let j=0;j<2;j++){const p=makePiece(d.id,kind,mm,nominal,arc.center,j===0?'表':'裏',j,conf.width);
+      Object.assign(p,{start:arc.start,end:arc.end,arcTheta:arc.theta,axisFactor:(arc.end-arc.start)/(mm/10)});pieces.push(p);}}
+    else for(let j=0;j<copies;j++)pieces.push(makePiece(d.id,kind,mm,nominal,x,j===0?'左/表':j===1?'右/裏':j===2?'左/裏':'右/表',j,conf.width));
+    const added=pieces.reduce((s,p)=>s+(conf.mode==='fixed'&&conf.fixedBasis==='nominal'?p.nominal:p.cutMass),0);
+    const moment=pieces.reduce((s,p)=>s+(conf.mode==='fixed'&&conf.fixedBasis==='nominal'?p.nominal:p.cutMass)*p.center,0);
+    const o={id:d.id,name:d.name,kind,x:kind==='tip'?pieces[0].center:x,added,moment,number:pieces.length,parts:pieces.length,pieces,interval:[Math.min(...pieces.map(p=>p.start)),Math.max(...pieces.map(p=>p.end))],circ:g.circ,measured:Number.isFinite(r.available[d.id])};
+    if(eligible(o,d,g,r,conf))opts.push(o);
+   }
+  }
+ }
+ return opts;
+}
+function collide(a,b){if(a.id===b.id)return true;const sep=.20; // 2 mm longitudinal allowance
+ if(a.interval[1]+sep<=b.interval[0] || b.interval[1]+sep<=a.interval[0])return false;
+ // Grip vs throat occupy different construction elements unless adjacent at joint;
+ // Two distinct hoop regions share the rails; throat regions share the arms.
+ if(a.kind==='wrap'||a.kind==='vertical'){return b.kind==='wrap'||b.kind==='vertical';}
+ if(b.kind==='wrap'||b.kind==='vertical')return false;
+ if(a.kind==='throat'&&b.kind==='throat')return true;
+ if(a.kind==='throat'||b.kind==='throat')return false;
+ return true;
+}
+const zero={items:[],added:0,moment:0,pieces:0,sites:0};
+function combine(a,b){return {items:[...a.items,...b.items],added:a.added+b.added,moment:a.moment+b.moment,pieces:a.pieces+b.pieces,sites:a.sites+b.sites};}
+function toCandidate(o){return {items:[o],added:o.added,moment:o.moment,pieces:o.number,sites:1};}
+function finished(r,c){const mass=r.m+c.added,moment=r.m*r.b/10+c.moment;return {mass,bmm:moment/mass*10,moment,added:c.added,swDelta:c.items.reduce((v,item)=>v+item.pieces.reduce((z,p)=>z+(p.nominal!==null&&c._nominal? p.nominal:p.cutMass)*(p.center-10)**2/1000,0),0)};}
+function simpleState(r,c,conf){const state=finished(r,c);state.swDelta=c.items.reduce((v,item)=>v+item.pieces.reduce((sum,p)=>sum+(conf.mode==='fixed'&&conf.fixedBasis==='nominal'?p.nominal:p.cutMass)*(p.center-10)**2/1000,0),0);state.sw=r.sw==null?null:r.sw+state.swDelta;return state;}
+// Beam compression: preserve minimal complexity within 0.025mm balance bins for each 0.015g mass bin.
+function candidates(r,side,defsActive,conf){const lists=defsActive.map(d=>siteOptions(r,side,d,conf));const geom=sideGeom(r);
+ const buckets=new Map(), quant=(v)=>Math.round(v*40); // 0.025 mm
+ function keep(c){const f=finished(r,c),massKey=Math.round(c.added/.015),balKey=quant(f.bmm);const key=massKey+'|'+balKey;const former=buckets.get(key);
+  if(!former||c.added<former.added-0.000001||(Math.abs(c.added-former.added)<.000001&&(c.sites<former.sites||(c.sites===former.sites&&c.pieces<former.pieces)))){c.mass=f.mass;c.bmm=f.bmm;buckets.set(key,c);}}
+ keep({...zero,items:[]});
+ for(let i=0;i<lists.length;i++)for(const o of lists[i]){keep(toCandidate(o));}
+ for(let i=0;i<lists.length;i++)for(let j=i+1;j<lists.length;j++){
+  for(const a of lists[i])for(const b of lists[j]){if(a.added+b.added>conf.maxAdded+EPS){reject('追加重量上限');continue;}if(collide(a,b)){reject('貼付帯の重複');continue;}keep(combine(toCandidate(a),toCandidate(b)));}
+ }
+ const arr=[...buckets.values()];for(const c of arr){if(c.mass===undefined){const f=finished(r,c);c.mass=f.mass;c.bmm=f.bmm;}}
+ return {candidates:arr,rawStations:lists.map(l=>l.length),geometry:geom};
+}
+function evaluation(a,b,ca,cb){const massErr=Math.abs(ca.mass-cb.mass),balErr=Math.abs(ca.bmm-cb.bmm);
+ return {ca,cb,massErr,balErr,metric:Math.max(massErr/.25,balErr),sum:massErr/.25+balErr,added:ca.added+cb.added,sites:ca.sites+cb.sites,pieces:ca.pieces+cb.pieces};}
+function better(x,y){if(!y)return true;const tolerance=.025; // about 0.00625 g or .025 mm equivalent
+ if(x.metric<y.metric-tolerance)return true;if(x.metric>y.metric+tolerance)return false;
+ if(x.sum<y.sum-tolerance)return true;if(x.sum>y.sum+tolerance)return false;
+ if(x.added<y.added-1e-8)return true;if(x.added>y.added+1e-8)return false;
+ if(x.sites!==y.sites)return x.sites<y.sites;return x.pieces<y.pieces;
+}
+const lowerBound=(arr,goal)=>{let lo=0,hi=arr.length;while(lo<hi){const mid=(lo+hi)>>1;if(arr[mid].bmm<goal)lo=mid+1;else hi=mid;}return lo;};
+function solve(state){for(const k in rejectCounts)delete rejectCounts[k];const conf=state.conf,A=state.A,B=state.B;
+ const active=defs.filter(d=>conf.active.includes(d.id));if(!active.length)throw Error('貼付可能な位置を１つ以上選んでください。');
+ const C={...conf,fixedWeights:conf.fixedWeights||[]};if(conf.mode==='fixed'&&!C.fixedWeights.length)throw Error('定量錘を１種類以上選んでください。');
+ const ra=state.matchMode==='both'?candidates(A,'A',active,C):{candidates:[{...zero,mass:A.m,bmm:A.b}],rawStations:[]};
+ const rb=candidates(B,'B',active,C);const arrA=ra.candidates,arrB=rb.candidates;
+ if(!arrB.length)throw Error('指定条件に貼付可能な候補はありません。');
+ let best=null;const grouped=new Map();for(const cb of arrB){const key=Math.round(cb.mass/.015);if(!grouped.has(key))grouped.set(key,[]);grouped.get(key).push(cb);}
+ const keys=[...grouped.keys()].sort((u,v)=>u-v);for(const g of grouped.values())g.sort((u,v)=>u.bmm-v.bmm);
+ for(const ca of arrA){const target=Math.round(ca.mass/.015);let ix=0,iy=keys.length-1;
+  // Nearest mass buckets first; skip buckets with worse mass bound than incumbent.
+  while(ix<iy){const mid=(ix+iy)>>1;if(keys[mid]<target)ix=mid+1;else iy=mid;}let l=ix-1,r=ix;
+  while(l>=0||r<keys.length){let k;if(l<0)k=keys[r++];else if(r>=keys.length)k=keys[l--];else if(Math.abs(keys[l]-target)<=Math.abs(keys[r]-target))k=keys[l--];else k=keys[r++];
+   const bucket=grouped.get(k);const actualMassErr=Math.abs(ca.mass-bucket[0].mass);
+   if(best&&actualMassErr/.25>best.metric+.05){ // sorted by mass proximity, can break when both farther
+    const leftFar=l<0||Math.abs(keys[l]*.015-ca.mass)>.25*(best.metric+.1);
+    const rightFar=r>=keys.length||Math.abs(keys[r]*.015-ca.mass)>.25*(best.metric+.1);
+    if(leftFar&&rightFar)break;continue;
+   }
+   const at=lowerBound(bucket,ca.bmm);
+   for(let p=Math.max(0,at-3);p<Math.min(bucket.length,at+4);p++){const next=evaluation(A,B,ca,bucket[p]);if(better(next,best))best=next;}
+  }
+ }
+ if(!best)throw Error('指定条件では候補を構成できません。');
+ const before={A:{mass:A.m,bmm:A.b},B:{mass:B.m,bmm:B.b}};
+ const after={A:simpleState(A,best.ca,C),B:simpleState(B,best.cb,C)};
+ // Independent arithmetic: recompute mass and first moment directly from the physical piece list.
+ for(const [tag,r,c] of [['A',A,best.ca],['B',B,best.cb]]){
+  let M=r.m,Q=r.m*r.b/10;for(const item of c.items)for(const p of item.pieces){const m=C.mode==='fixed'&&C.fixedBasis==='nominal'?p.nominal:p.mm*DENS;M+=m;Q+=m*p.center;}
+  if(Math.abs(M-after[tag].mass)>1e-7||Math.abs(Q/M*10-after[tag].bmm)>1e-7)throw Error('独立検算不一致 '+tag+' direct '+M+'/'+(Q/M*10)+' solver '+after[tag].mass+'/'+after[tag].bmm+' pieces '+c.items.length);
+ }
+ return {best,before,after,conf:C,A,B,approx:best.ca.items.concat(best.cb.items).some(it=>!it.measured),rejections:{...rejectCounts},tested:{A:arrA.length,B:arrB.length},geometry:{A:sideGeom(A),B:sideGeom(B)}};
+}
+function parseState(){const n=id=>{const s=$(id).value.trim();return s===''?NaN:Number(s);};const raw=id=>$(id).value.trim();let state={matchMode:document.querySelector('[name="matchMode"]:checked').value,measureMode:document.querySelector('[name="measureMode"]:checked').value};
+ for(const side of ['A','B']){const s=side.toLowerCase(),len=n(s+'l'),m=n(s+'m'),b=n(s+'b'),grip=n(s+'g'),circ=n(s+'c'),sw=raw(s+'s')===''?null:n(s+'s');
+  if(!Number.isFinite(len)||len<17||len>29.2)throw Error(side+'の全長を17〜29.2inchで入力してください。');
+  if(!Number.isFinite(m)||m<=0||m>1000)throw Error(side+'の重量は0g超〜1000gで入力してください。');
+  if(!Number.isFinite(b)||b<=0||b>=len*25.4)throw Error(side+'のバランスはエンドから測定し、全長(mm)以内にしてください。');
+  if(!Number.isFinite(grip)||grip<8||grip>30)throw Error(side+'のグリップ長は8〜30cmで入力してください。');
+  if(!Number.isFinite(circ)||circ<70||circ>160)throw Error(side+'のグリップ外周は70〜160mmで入力してください。');
+  if(sw!==null&&(!Number.isFinite(sw)||sw<=0))throw Error(side+'のSWは未入力または正の数にしてください。');
+  state[side]={len,m,b,grip,circ,sw,centers:{},available:{}};
+  const g=sideGeom(state[side]);if(grip>=g.throatEnd-.5)throw Error(side+'のグリップ長が長すぎて、模式上のスロートと干渉します。実測値を確認してください。');
+  for(const d of defs){const val=n(s+'x_'+d.id),available=raw(s+'v_'+d.id)===''?null:n(s+'v_'+d.id);if(!Number.isFinite(val)||val<0||val>g.L)throw Error(side+'の「'+d.name+'」の中心距離が不正です。');if(available!==null&&(!Number.isFinite(available)||available<=0||available>g.L*10))throw Error(side+'の「'+d.name+'」の実測可能長を正のmmで入力するか空欄にしてください。');state[side].centers[d.id]=val;state[side].available[d.id]=available;}
+ }
+ const width=n('tw'),maxCut=n('maxCut');if(!Number.isFinite(width)||width<1||width>30)throw Error('テープ幅は1〜30mmで入力してください。');if(!Number.isInteger(maxCut)||maxCut<1||maxCut>500)throw Error('１枚の最大カット長は1〜500の整数mmで入力してください。');
+ state.conf={width,maxCut,mode:document.querySelector('[name="weightMode"]:checked').value,fixedBasis:$('fixedBasis').value,fixedWeights:[...document.querySelectorAll('[data-fixed]:checked')].map(e=>Number(e.dataset.fixed)),step:Number($('cutStep').value),maxAdded:Number($('maxAdded').value),gripMethod:$('gripMethod').value,active:[...document.querySelectorAll('[data-active]:checked')].map(e=>e.dataset.active)};
+ return state;
+}
+function setup(){const tbody=$('stationBody');tbody.innerHTML=defs.map(d=>`<tr><td><label><input type="checkbox" data-active="${d.id}" checked><span>${esc(d.name)}</span></label></td><td><input id="ax_${d.id}" type="number" step="any" aria-label="A ${esc(d.name)} ${d.kind==='tip'?'フレーム最先端位置':'中心'}"></td><td><input id="av_${d.id}" type="number" step="any" placeholder="概算" aria-label="A ${esc(d.name)} 実測可能長"></td><td><input id="bx_${d.id}" type="number" step="any" aria-label="B ${esc(d.name)} ${d.kind==='tip'?'フレーム最先端位置':'中心'}"></td><td><input id="bv_${d.id}" type="number" step="any" placeholder="概算" aria-label="B ${esc(d.name)} 実測可能長"></td></tr>`).join('');resetDistances(true);
+ for(const side of ['a','b']){for(const id of [side+'l',side+'g'])$(id).addEventListener('input',()=>resetDistances(false,side));for(const d of defs)$(side+'x_'+d.id).addEventListener('input',e=>{e.target.dataset.override='1';});}
+ document.querySelectorAll('[name="matchMode"]').forEach(el=>el.addEventListener('change',setLabels));document.querySelectorAll('[name="measureMode"]').forEach(el=>el.addEventListener('change',setLabels));document.querySelectorAll('[name="weightMode"]').forEach(el=>el.addEventListener('change',setLabels));setLabels();}
+function resetDistances(force=false,only=null){for(const side of only?[only]:['a','b']){const len=Number($(side+'l').value),grip=Number($(side+'g').value);const r={len,grip,circ:Number($(side+'c').value)};const g=sideGeom(r);if(!Number.isFinite(g.L)||!Number.isFinite(grip))continue;for(const d of defs){const el=$(side+'x_'+d.id);if(force||!el.dataset.override){el.value=fmt(schematic(d,g),2);delete el.dataset.override;}}}}
+function setLabels(){const one=document.querySelector('[name="matchMode"]:checked').value==='one';$('titleA').textContent=one?'基準ラケット':'ラケット A';$('titleB').textContent=one?'調整するラケット':'ラケット B';const measure=document.querySelector('[name="measureMode"]:checked').value;$('measureHint').textContent=measure==='purchase'?'購入時の比較：実際に測った状態を２本で統一してください。「購入時」でも張り上げ済みなら装着品を確認してください。モデルが同じことは計算の必須条件ではありません。':'実使用時の比較：ストリング、オーバーグリップ、振動止め等を含め、比較したい使用状態で２本を測ってください。異なるモデルでも計算できます。';const fixed=document.querySelector('[name="weightMode"]:checked').value==='fixed';$('fixedSettings').hidden=!fixed;$('freeSettings').hidden=fixed;}
+function drawing(tag,r,c,conf){const g=sideGeom(r),W=70,cx=146,Y=x=>568-(x/g.L)*526,yy=x=>fmt(Y(x),2),oval=g.H/2,cy=Y(g.start+oval),ry=(Y(g.start)-Y(g.L))/2;
+ const hoopDX=x=>{const t=Math.max(-1,Math.min(1,(x-(g.start+oval))/oval));return W*Math.sqrt(Math.max(0,1-t*t));};
+ const armX=(x,sign)=>{const start=g.grip,stop=g.throatEnd,progress=Math.max(0,Math.min(1,(x-start)/(stop-start)));return cx+sign*(6+(hoopDX(g.throatEnd)-6)*progress);};
+ const head=`M ${cx} ${yy(g.L)} C ${cx-W*.83} ${yy(g.L)} ${cx-W} ${yy(g.start+g.H*.7)} ${cx-W} ${yy(g.start+g.H*.5)} C ${cx-W} ${yy(g.start+g.H*.24)} ${cx-W*.56} ${yy(g.start+g.H*.045)} ${cx} ${yy(g.start)} C ${cx+W*.56} ${yy(g.start+g.H*.045)} ${cx+W} ${yy(g.start+g.H*.24)} ${cx+W} ${yy(g.start+g.H*.5)} C ${cx+W} ${yy(g.start+g.H*.7)} ${cx+W*.83} ${yy(g.L)} ${cx} ${yy(g.L)} Z`;
+ let form=`<path d="${head}" fill="#ecf7f0" stroke="#53736b" stroke-width="7"/><path d="M ${cx-10} ${yy(g.grip)} Q ${cx-3} ${yy(g.grip+1)} ${cx-hoopDX(g.throatEnd)} ${yy(g.throatEnd)} M ${cx+10} ${yy(g.grip)} Q ${cx+3} ${yy(g.grip+1)} ${cx+hoopDX(g.throatEnd)} ${yy(g.throatEnd)}" fill="none" stroke="#53736b" stroke-width="8" stroke-linecap="round"/><rect x="${cx-11}" y="${yy(g.grip)}" width="22" height="${fmt(Y(0)-Y(g.grip))}" rx="7" fill="#acc4b9" stroke="#53736b" stroke-width="2"/><path d="M ${cx-36} ${yy(g.bridge)} Q ${cx} ${yy(g.bridge-.6)} ${cx+36} ${yy(g.bridge)}" fill="none" stroke="#486a60" stroke-width="5"/><path d="M ${cx-6} ${yy(0)} h 12" stroke="#1b3937" stroke-width="6" stroke-linecap="round"/>`;
+ // The string bed is separate from the structural bridge and throat arms.
+ for(let j=1;j<9;j++){let x=cx-W+W*2*j/9;form+=`<path d="M ${fmt(x,1)} ${yy(g.start+g.H*.28)} V ${yy(g.start+g.H*.78)}" stroke="#b9d6c7" stroke-width=".7"/>`;}
+ for(let j=1;j<13;j++){const x=g.start+g.H*(.16+j*.058);form+=`<path d="M ${cx-hoopDX(x)*.92} ${yy(x)} H ${cx+hoopDX(x)*.92}" stroke="#bbd4c9" stroke-width=".7"/>`;}
+ const axis=`<path d="M 40 ${yy(g.L)} V ${yy(0)}" stroke="#93b3a8" stroke-width="1.1" stroke-dasharray="3 3"/><path d="M 33 ${yy(g.L)} H 49 M 33 ${yy(0)} H 49" stroke="#6c9689" stroke-width="1.3"/><text x="9" y="${fmt(Y(g.L)-10,1)}" font-size="12" fill="#3d6458">全長 ${fmt(g.L,1)}cm</text><text x="9" y="${fmt(Y(0)-9,1)}" font-size="12" font-weight="700" fill="#315d52">0cm</text><path d="M 40 ${yy(g.grip)} H 68" stroke="#83a99b" stroke-dasharray="3 3"/><text x="8" y="${fmt(Y(g.grip)-9)}" font-size="11" fill="#526971">上端 ${fmt(g.grip,1)}cm</text>`;
+ let marks='', ribbons='';
+ const sites=[...c.items].sort((a,b)=>b.x-a.x);let lastLabel=5;
+ for(const [index,it] of sites.entries()){
+  const desired=Y(it.x),labelY=Math.min(522,Math.max(desired,lastLabel+64));lastLabel=labelY;
+  for(const p of it.pieces){if(it.kind==='wrap'){const y=Y(p.center),bw=13*Math.min(1,p.mm/it.circ),bandH=(conf.width/10)/g.L*526;const x=(p.side.includes('①')?cx-6-bw:cx+6);ribbons+=`<rect x="${fmt(x,1)}" y="${fmt(y-bandH/2,2)}" width="${fmt(bw,1)}" height="${fmt(bandH,1)}" rx="1.2" fill="#d6812c" stroke="#fff" stroke-width=".65"/>`;}
+   else if(it.kind==='tip'){
+    // SVGも計算に使用した同じ楕円弧とカット長から描く。表裏は見分けやすく2pxずらす。
+    let path='';const n=32,axial=g.H/2;
+    for(let j=0;j<=n;j++){const t=-p.arcTheta+2*p.arcTheta*j/n;
+     const pos=p.end-axial*(1-Math.cos(t));const xx=cx+W*Math.sin(t);
+     path+=`${j?'L':'M'} ${fmt(xx,2)},${fmt(Y(pos)+p.index*2,2)} `;}
+    ribbons+=`<path d="${path}" fill="none" stroke="#d6812c" stroke-width="${p.index?3.7:6}" stroke-linecap="round" opacity="${p.index?.82:1}"/>`;
+   }
+   else{const n=Math.max(3,Math.ceil((p.end-p.start)/.25)),sgn=it.kind==='face'?p.index<2?-1:1:p.index===0?-1:1;
+    // Face 4 copies: indexes 0,1 left/right, 2,3 left/right. Rear is slightly offset to visualize two faces.
+    let coords='';for(let j=0;j<=n;j++){const pos=p.start+(p.end-p.start)*j/n;let lx=it.kind==='throat'?armX(pos,sgn):it.kind==='tip'?cx+(p.index?3:-3):cx+((p.index%2===0)?-1:1)*hoopDX(pos)+(p.index<2?-1.8:1.8);coords+=`${j?'L':'M'}${fmt(lx,2)},${yy(pos)} `;}
+    ribbons+=`<path d="${coords}" fill="none" stroke="#d6812c" stroke-width="${it.kind==='throat'?6:5.3}" stroke-linecap="round"/>`;
+   }
+  }
+  const referX=it.kind==='throat'?armX(it.x,1):it.kind==='wrap'||it.kind==='vertical'?cx:it.kind==='tip'?cx:cx+hoopDX(it.x);
+  const labelX=260,axLo=Math.min(...it.pieces.map(p=>p.start)),axHi=Math.max(...it.pieces.map(p=>p.end));
+  marks+=`<path d="M ${fmt(referX+5,1)} ${yy(it.x)} L 247 ${fmt(labelY,1)}" fill="none" stroke="#b77632" stroke-width="1.25"/><circle cx="${fmt(referX,1)}" cy="${yy(it.x)}" r="3" fill="#8e4f10" stroke="white" stroke-width="1"/><text x="${labelX}" y="${fmt(labelY-12,1)}" font-size="12" fill="#603f22" font-weight="700">${esc(it.name.replace('（左右アーム）','').replace('（表裏）',''))}</text><text x="${labelX}" y="${fmt(labelY+3,1)}" font-size="11" fill="#603f22">エンドから中心 ${fmt(it.x,2)}cm / ${it.pieces.length}枚</text><text x="${labelX}" y="${fmt(labelY+18,1)}" font-size="11" fill="#603f22">１枚 ${it.pieces[0].mm}mm ${it.kind==='wrap'?'（周方向）':it.kind==='face'||it.kind==='tip'?'（フレーム弧長）':'（部材沿い）'}</text><text x="${labelX}" y="${fmt(labelY+33,1)}" font-size="10" fill="#603f22">${it.kind==='tip'?'上下': '開始'} ${fmt(axLo,2)} ～ ${it.kind==='tip'?'先端':'終了'} ${fmt(axHi,2)}cm</text>`;
+ }
+ if(!sites.length)marks='<text x="260" y="285" font-size="14" fill="#71837d">追加なし</text>';
+ return `<svg viewBox="0 0 510 608" role="img" aria-label="ラケット${tag}の模式図。グリップ・左右スロートアーム・ブリッジ・フェイスを区別し錘の帯と中心を表示"><title>ラケット${tag} テープ配置模式図</title><desc>寸法は一般的な概算。横巻きは周方向の短帯、スロートはアームに沿った線分、フェイスはフレーム曲線に沿った帯。12時は頂部をまたぐ弧。裏面分は少しずらして表示。</desc>${axis}${form}${ribbons}${marks}<text x="145" y="598" fill="#667b73" font-size="12" text-anchor="middle">下端（0cm）から上へ測る</text></svg>`;
+}
+function wrapCrossSection(mm,circ){
+ // 上から見たグリップ断面。長さの比に応じ、180°対向した同長2片を表示する。
+ const cx=49,cy=45,rad=27,halfAngle=Math.PI*mm/circ;
+ function point(t){return [cx+rad*Math.cos(t),cy+rad*Math.sin(t)];}
+ function arc(center){const a=point(center-halfAngle),b=point(center+halfAngle);
+  return `M${fmt(a[0],2)} ${fmt(a[1],2)} A${rad} ${rad} 0 ${2*halfAngle>Math.PI?1:0} 1 ${fmt(b[0],2)} ${fmt(b[1],2)}`;}
+ const gap=Math.max(0,circ-2*mm);
+ return `<div class="wrap-cross"><svg viewBox="0 0 310 95" role="img" aria-label="グリップの断面を上から見た図。オレンジの2つの弧が向かい合わせのテープ2枚。1段ごとに2枚必要"><title>横巻き1段の貼り方（断面図）</title>
+ <circle cx="49" cy="45" r="27" fill="#e6f1eb" stroke="#557c6e" stroke-width="9"/>
+ <path d="${arc(0)}" fill="none" stroke="#e89030" stroke-width="8" stroke-linecap="butt"/><path d="${arc(Math.PI)}" fill="none" stroke="#e89030" stroke-width="8"/>
+ <text x="95" y="27" fill="#2e5149" font-size="13" font-weight="700">上から見たグリップの断面</text>
+ <text x="95" y="49" fill="#2e5149" font-size="12">1段＝${mm}mm × 向かい合わせ2枚</text>
+ <text x="95" y="69" fill="#526971" font-size="11">周囲${fmt(circ,0)}mm ／ 貼らない部分 合計${fmt(gap,0)}mm</text>
+ <text x="95" y="85" fill="#526971" font-size="10">オレンジ＝テープ、灰緑＝グリップ</text></svg></div>`;
+}
+function describe(tag,r,c,result){
+ const after=result.after[tag],title=result.conf.matchMode==='one'?(tag==='A'?'基準ラケット':'調整するラケット'):'ラケット '+tag;
+ return `<div class="result"><div class="head"><span class="letter ${tag==='B'?'b':''}">${tag}</span>${title}</div>
+ <p class="hint">調整前 ${fmt(r.m,3)}g / ${fmt(r.b,2)}mm → 調整後 <strong>${fmt(after.mass,3)}g / ${fmt(after.bmm,3)}mm</strong></p>
+ <p><strong>追加する錘：合計 ${fmt(after.added,3)}g</strong> ／ ${c.sites}箇所・${c.pieces}枚</p>
+ ${c.items.length?c.items.map(item=>{
+ const first=item.pieces[0],n=item.pieces.length;
+ const lo=Math.min(...item.pieces.map(p=>p.start)),hi=Math.max(...item.pieces.map(p=>p.end));
+ const wrap=item.kind==='wrap',bandCenters=wrap?item.pieces.filter((_,i)=>i%2===0).map(p=>fmt(p.center,2)).join(' / '):'';
+ const symmetry=item.kind==='face'?'左右×表裏の４枚':item.kind==='throat'?'左アーム１枚・右アーム１枚':item.kind==='tip'?'表裏２枚':item.kind==='vertical'?'グリップ表裏２枚':`向かい合わせに２枚ずつ・${n/2}段`;
+ const method=wrap?'横巻き':item.kind==='tip'?'フレーム頂部に沿って貼る':item.kind==='face'?'フレームの曲線に沿って貼る':item.kind==='throat'?'左右アームに沿って貼る':'縦貼り';
+ return `<div class="placement"><strong>${esc(item.name)}｜${method}</strong>
+ <div class="howto">${wrap?`各段は${first.mm}mmのテープを2枚切り、グリップの表側と裏側へ向かい合わせに1枚ずつ貼ります。${n/2}段で合計${n}枚です。`:item.kind==='tip'?`12時のフレーム頂部をまたぐように曲線に沿わせ、表面1枚・裏面1枚（合計2枚）貼ります。まっすぐ縦方向に貼る意味ではありません。`:`${symmetry}を貼ります（計${n}枚）`}</div>
+ <div class="cut"><b>貼る位置の中心：グリップエンドから ${fmt(item.x,2)}cm（${fmt(item.x*10,1)}mm）</b><br>
+ １枚のテープの長さ：<b>${first.mm}mm</b> ／ この部位の追加重量：${fmt(item.added,3)}g<br>
+ ${item.kind==='tip'?'フレーム頂部のテープが占める上下の範囲（エンド基準・模式楕円）：':'テープが占める上下の範囲（エンド基準）：'}<b>${fmt(lo,2)}～${fmt(hi,2)}cm</b>
+ ${wrap?`<br>横巻きする各段の中心：エンドから ${bandCenters}cm<br>各段でテープ２枚の中心高さをそろえ、周囲の反対側に貼ります。${first.mm}mmはグリップの周りに巻く方向の長さです（テープ幅 ${fmt(result.conf.width,1)}mm、周りの長さ ${fmt(item.circ,1)}mm）。${wrapCrossSection(first.mm,item.circ)}`:''}
+ ${result.conf.mode==='fixed'?`<br>１枚の重量：公称 ${fmt(first.nominal,2)}g ／ 同じ密度のテープを${first.mm}mmに切った場合 ${fmt(first.cutMass,3)}g`:''}
+ ${item.kind==='throat'?'<br>左右の斜めアームに沿って貼ります（角度・投影長は概算）。':item.kind==='tip'?'<br>カット長はフレームに沿う弧の長さです。上下範囲と重心は模式楕円から算出しており、実物の形状・グロメット位置は要確認です。':item.kind==='face'?'<br>カット長はフレームに沿った長さです。上下範囲はフレーム形状の概算です。':''}
+ </div></div>`;
+ }).join(''):'<div class="placement">錘を追加する必要はありません（0g・0枚）。</div>'}
+ <div class="figure">${drawing(tag,r,c,result.conf)}</div>
+ <p class="hint">図の<strong>0cmはグリップの一番下（エンド）</strong>。オレンジ帯が貼付位置です。フェイスでは「縦貼り」ではなくフレームの曲線に沿って貼ります。裏面のテープは見やすいよう少しずらして描いています。形状は概算のため、実物で位置と貼れる範囲を確認してください。</p></div>`;
+}
+function materialEstimate(best){
+ const lengths=best.ca.items.concat(best.cb.items).flatMap(item=>item.pieces.map(p=>p.mm));
+ const totalMm=lengths.reduce((sum,mm)=>sum+mm,0);
+ // First-fit decreasing rolls. This is a feasible purchase estimate, not a proven minimum pack count.
+ const rolls=[];
+ for(const len of [...lengths].sort((a,b)=>b-a)){
+  if(len>600)throw Error('KBN263は１本600mmのため、600mmを超えるテープ片は切り出せません。');
+  let index=rolls.findIndex(remaining=>remaining>=len);
+  if(index===-1){rolls.push(600-len);}else rolls[index]-=len;
+ }
+ return {totalMm,rolls:rolls.length,packs:Math.ceil(rolls.length/2),pieces:lengths.length};
+}
+function render(result){const {best,A,B,after,conf}=result;conf.matchMode=result.matchMode;const material=materialEstimate(best);
+ const near=best.massErr<=.25+1e-8&&best.balErr<=1+1e-8,perfect=best.massErr<5e-8&&best.balErr<5e-7,onlyZero=(best.ca.items.length+best.cb.items.length===0),reason=Object.entries(result.rejections).sort((a,b)=>b[1]-a[1]).slice(0,6);
+ let warn=[];if(!near)warn.push(onlyZero?'物理制約で実行不可／条件内で一致不可：錘を追加できる候補がなく、調整前の差が残っています。貼付位置・最大長・実測可能長・使える錘を見直してください。':'条件内で一致不可（目標未達）：許された配置の中で残差が最小の近似案です。使用箇所・上限・カット長・グリップ方法・実測可能長を見直してください。');if(result.approx&&(!onlyZero))warn.push('寸法不足で概算：メーカー形状やグロメット位置などを確認できないため、数値上可能でも現物で貼れる保証はありません。部位別実測可能長の入力を推奨します。');if(A.len!==B.len)warn.push('全長が異なります。重量とバランスだけでは形状・打球特性はそろいません。');if(A.sw===null||B.sw===null)warn.push('SWが未測定のラケットがあります。測定済みの側だけ元SW＋増加分を示しますが、完成後のSW差は評価できません。');if(conf.mode==='fixed'&&conf.fixedBasis==='nominal')warn.push('注意：公称定量錘モードはKBN263の整数mmカットで再現される重量とは異なります。KBN263を使う場合は計算基準を「KBN263：カットしたmm数で換算」にしてください。');if(conf.mode==='fixed')warn.push(conf.fixedBasis==='nominal'?'定量錘は製品の公称重量で計算しています。表記の整数mmに同密度のテープを切って再現する場合はカット換算重量との差が生じます。':'定量錘の公称値ではなく、整数mmに切った密度換算重量で計算しています。');
+ const swBefore=(tag)=>{const r=tag==='A'?A:B;return r.sw===null?'未測定':fmt(r.sw,2);};
+ const swAfter=(tag)=>{const s=after[tag];return s.sw===null?`増加 +${fmt(s.swDelta,2)} のみ`:`${fmt(s.sw,2)} （+${fmt(s.swDelta,2)}）`;};
+ $('output').innerHTML=`<section class="card"><h2>計算結果 — 整数mmカット・公称重量の設定を反映</h2><div class="result-disclaimer" role="note"><strong>ご注意：表示される調整後スペックは計算値です</strong>入力した実測値と錘テープの仕様を基にした推定結果です。錘の実際の重量・貼付位置・測定誤差などにより、<b>実物で２本の重量とバランスが完全に一致することを保証するものではありません。</b><br><b>貼り付け後は、必ず２本とも重量・バランスを再測定してください。</b></div><span class="pill">${perfect?'表示精度内で計算上一致':near?'計算上の一致目標達成':`${onlyZero?'物理制約で実行不可':'目標未達・近似案'}`}</span><div class="stats"><div class="stat"><small>最終重量差</small><strong>${fmt(best.massErr,4)} g</strong></div><div class="stat"><small>最終バランス差</small><strong>${fmt(best.balErr,4)} mm</strong></div><div class="stat"><small>追加合計 / 使う部位 / 枚数</small><strong>${fmt(best.added,3)} g</strong><small>${best.sites}箇所・${best.pieces}枚</small></div></div><p class="hint">一致目標：重量差0.25g以内・バランス差1mm以内（計算上の目安）。厳密一致はカット／公称質量反映後の差が表示精度内でゼロの場合のみです。重量・バランス精度 → 追加量 → 箇所数 → 枚数の順で比較します。</p>${warn.map(w=>`<div class="warning">${esc(w)}</div>`).join('')}</section><section class="card"><h2>必要なテープの量（KBN263での目安）</h2><div class="product-meter"><strong>カットする長さの合計：${material.totalMm.toLocaleString()}mm ／ ${material.pieces}枚</strong><br>１パック＝600mmのロール２本（計1200mm、合計18g）。<br><strong>必要なロール：約${material.rolls}本 → 必要パック数の目安：${material.packs}パック</strong><br><small>カット片を600mmロールへ長さ順に割り付けた概算です。切断ロスは含まず、最少パック数の保証ではありません。${conf.mode==='fixed'&&conf.fixedBasis==='nominal'?'現在は独立した公称定量錘による計算です。KBN263換算に切り替えると計算重量が変わります。':'重量計算にはKBN263の公称密度0.015g/mmを使用しています。'}</small></div><p class="hint">この商品は鉛製のため、切断・貼付後は手を洗い、乳幼児が触れないよう保管してください。</p></section><section class="card"><h2>スペック比較（調整前A・B ／ 調整後A・B）</h2>
+<div class="table-wrap"><table class="compare-table" aria-label="調整前A、調整前B、調整後A、調整後Bの比較表"><thead><tr><th scope="col">項目</th><th scope="col">調整前 A</th><th scope="col">調整前 B</th><th scope="col" class="compare-separator">調整後 A</th><th scope="col">調整後 B</th></tr></thead><tbody>
+<tr><th scope="row">総重量 (g)</th><td>${fmt(A.m,3)}</td><td>${fmt(B.m,3)}</td><td class="compare-separator">${fmt(after.A.mass,3)}</td><td>${fmt(after.B.mass,3)}</td></tr>
+<tr><th scope="row">バランス (mm)</th><td>${fmt(A.b,3)}</td><td>${fmt(B.b,3)}</td><td class="compare-separator">${fmt(after.A.bmm,3)}</td><td>${fmt(after.B.bmm,3)}</td></tr>
+<tr><th scope="row">全長 (inch)</th><td>${fmt(A.len,2)}</td><td>${fmt(B.len,2)}</td><td class="compare-separator">${fmt(A.len,2)}</td><td>${fmt(B.len,2)}</td></tr>
+<tr><th scope="row">参考SW</th><td>${swBefore('A')}</td><td>${swBefore('B')}</td><td class="compare-separator">${swAfter('A')}</td><td>${swAfter('B')}</td></tr>
+</tbody></table></div>
+<p class="compare-diff">調整後のA・Bの差：重量 ${fmt(best.massErr,3)}g ／ バランス ${fmt(best.balErr,3)}mm ／ 全長 ${fmt(Math.abs(A.len-B.len),2)}inch</p>
+<p class="hint">調整後の重量とバランスは計算値です。SWを測っていない側は元のSWが不明なため、増加量だけを表示します。</p>
+<p class="hint">SW増加量 ≈ Σ[m(g) × (錘中心cm − 10cm)² / 1000] kg·cm²。10cm軸周りの点質量近似でテープの分布慣性・曲率等を省略しています。</p></section><section class="card"><h2>貼付指示とラケット模式図</h2><p class="warning"><strong>施工前に現物を確認してください。</strong>図は概算です。テープを貼った後は重量・バランスを必ず再測定し、必要なら微調整してください。</p><div class="reading-guide"><strong>貼るときの基準：グリップの一番下（エンド）が0cmです。</strong>そこからラケットの先端方向へ測ってください。<br>たとえば「中心2.60cm」は下端から26mmの高さです。「テープの長さ51mm」は切る長さで、グリップ横巻きの場合は<strong>周りに巻く方向</strong>の長さです。図の「上下範囲」はラケットの長手方向で、テープを切る長さとは別です。フェイスの錘はフレームの曲線に沿わせ、12時は頂部をまたぐ形で表裏に1枚ずつ貼ります。</div><div class="two">${describe('A',A,best.ca,result)}${describe('B',B,best.cb,result)}</div></section><section class="card"><details><summary>探索の制約と候補除外（詳細）</summary><p class="hint">探索した圧縮後の候補数：A ${result.tested.A.toLocaleString()} / B ${result.tested.B.toLocaleString()}。重複する部位や上限超過の候補は解に含めません。</p>${reason.map(([key,num])=>`<p class="hint">${esc(key)}：${num.toLocaleString()} 件を除外</p>`).join('')}<p class="hint">探索は１本につき０〜２箇所の配置セットを候補とし、質量0.015g単位・バランス0.025mm幅の候補を間引くヒューリスティックです。全組合せの厳密な大域最適性は保証しません。</p></details><p class="hint">物理的に貼れないことが既知の候補は採用しません。ただし寸法が不明なフェイス湾曲・グロメット・テープ幅方向の干渉は概算／要現物確認です。</p></section>`;
+}
+function resetAll(){$('positionDetails').open=false;$('gripHelp').open=false;$('balanceGuide').open=false;for(const id of ['am','ab','as','bm','bb','bs'])$(id).value='';for(const id of ['al','bl'])$(id).value='27';for(const id of ['ag','bg'])$(id).value='20';for(const id of ['ac','bc'])$(id).value='108';$('tw').value='6';$('maxCut').value='100';$('maxAdded').value='16';$('cutStep').value='1';$('fixedBasis').value='density';$('gripMethod').value='auto';document.querySelector('[name="matchMode"][value="one"]').checked=true;document.querySelector('[name="measureMode"][value="purchase"]').checked=true;document.querySelector('[name="weightMode"][value="fixed"]').checked=true;document.querySelectorAll('[data-fixed],[data-active]').forEach(e=>e.checked=true);for(const side of ['a','b'])for(const d of defs)$(side+'v_'+d.id).value='';resetDistances(true);setLabels();$('output').innerHTML='<section class="card"><p class="muted">重量・バランスを入力したら「２本のラケットを合わせる」を押してください。</p></section>';}
+setup();$('defaults').addEventListener('click',()=>resetDistances(true));$('reset').addEventListener('click',resetAll);$('example').addEventListener('click',()=>{Object.entries({am:'302',ab:'322',bm:'300',bb:'320'}).forEach(([k,v])=>$(k).value=v);resetDistances(true);$('output').innerHTML='<section class="card"><p>入力例：基準 A 302g/322mm、調整対象 B 300g/320mm。計算ボタンを押してください。</p></section>';});
+$('calculate').addEventListener('click',()=>{let state;try{state=parseState();}catch(e){$('output').innerHTML='<section class="card"><div class="error">'+esc(e.message)+'</div></section>';return;}$('calculate').disabled=true;$('output').innerHTML='<section class="card"><p>実行可能な候補を探索しています…</p></section>';setTimeout(()=>{try{const result=solve(state);result.matchMode=state.matchMode;render(result);}catch(e){$('output').innerHTML='<section class="card"><div class="error">'+esc(e.message)+'</div></section>';}finally{$('calculate').disabled=false;}},15);});
+window.RM8={defs,sideGeom,schematic,zone,geomFor,makePiece,siteOptions,collide,parseState,solve,candidates,finished,simpleState,evaluation,better,draw:drawing,read:parseState};
+})();
+</script></body></html>
